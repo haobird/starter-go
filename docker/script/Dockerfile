@@ -1,4 +1,4 @@
-FROM haobird/golang:develop-1.15
+FROM haobird/golang:develop-1.17
 LABEL maintainer="xyqbgn@126.com"
 
 # COPY . .

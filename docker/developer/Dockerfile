@@ -1,0 +1,42 @@
+FROM ubuntu:18.04
+LABEL maintainer="xyqbgn@126.com"
+
+# 更换源
+RUN sed -i 's#deb.debian.org#mirrors.aliyun.com#g' /etc/apt/sources.list &&\
+    sed -i 's#security.debian.org#mirrors.aliyun.com#g' /etc/apt/sources.list &&\
+    apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    net-tools \
+    tzdata \
+    apt-utils
+
+# 设置时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ENV TZ=Asia/Shanghai
+
+# 安装开发工具
+RUN apt-get install -y wget vim htop curl sudo git inetutils-ping supervisor gcc make
+
+# 增加 golang环境
+RUN curl -L https://golang.google.cn/dl/go1.17.linux-amd64.tar.gz -o go1.15.linux-amd64.tar.gz &&\
+    tar -C /usr/local -xzf go1.17.linux-amd64.tar.gz
+
+ENV PATH /usr/local/go/bin:$PATH
+ENV GOPATH /go
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
+ENV PATH $GOPATH/bin:$PATH
+ENV GOBIN=$GOPATH/bin
+ENV GO111MODULE=on
+ENV GOPROXY=https://goproxy.io,direct
+ENV GOLANG_VERSION 1.17.2
+
+
+# 清除安装包
+# RUN rm -rf /var/lib/apt/lists/*
+
+# 增加工作目录
+ENV HOME  "/www"
+RUN mkdir ${HOME}
+WORKDIR ${HOME}/
+
+ENTRYPOINT ["/bin/sh", "-c", "while true;do echo hello docker;sleep 1;done"]
