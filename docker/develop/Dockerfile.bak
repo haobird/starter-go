@@ -15,7 +15,8 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ENV TZ=Asia/Shanghai
 
 # 安装开发工具
-RUN apt-get install -y wget vim htop curl sudo git inetutils-ping supervisor gcc make
+RUN apt-get install -y wget vim htop curl sudo git inetutils-ping supervisor gcc make 
+RUN apt-get install -y ffmpeg
 
 # 增加 golang环境
 RUN curl -L https://golang.google.cn/dl/go1.17.linux-amd64.tar.gz -o go1.15.linux-amd64.tar.gz &&\
@@ -28,8 +29,7 @@ ENV PATH $GOPATH/bin:$PATH
 ENV GOBIN=$GOPATH/bin
 ENV GO111MODULE=on
 ENV GOPROXY=https://goproxy.io,direct
-ENV GOLANG_VERSION 1.17.2
-
+# ENV GOLANG_VERSION 1.17.2
 
 # 清除安装包
 # RUN rm -rf /var/lib/apt/lists/*

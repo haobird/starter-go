@@ -29,19 +29,25 @@ make docker_golang
 ```
 ## 自动构建
 
-### 编译二进制代码
+### 编译单个服务二进制代码
 
 ```
 make compile_demo
 ```
 
-### 构建服务镜像
+### 构建单个服务镜像
 
 ```
 make docker_demo
 ```
 
-### 发布服务镜像
+### 构建所有服务镜像
+
+```
+make dockers
+```
+
+### 发布单个服务镜像
 
 ```
 # 如果不传入VERSION 参数，则默认为 latest
@@ -51,12 +57,47 @@ make release_demo VERSION=V1.4
 ### 基于最新tag，发布所有服务镜像
 
 ```
+make release
+```
 
+### 发布golang基础环境
+
+```
+make release_golang VERSION=develop-1.17
 ```
 
 ### 发布开发环境镜像
 
 ```
+make release_develop VERSION=latest
+```
+
+### 容器运行单个服务
 
 ```
+make run_demo
+```
+
+### 运行所有服务镜像
+
+```
+make runs
+```
+
+### 运行容器测试
+
+```
+make runner
+```
+
+### 本地启动
+
+```
+make boot
+```
+
+
+
+
+## test
 
