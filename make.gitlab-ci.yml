@@ -1,0 +1,11 @@
+stages:
+  - test
+ 
+build:
+  stage: test
+  script:
+    - cd static
+    - make test
+  only:
+  - master
+  - develop

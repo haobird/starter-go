@@ -1,0 +1,33 @@
+# stages: 定义管道的阶段，一般包含构建 镜像、单元测试 、 部署 三个阶段
+stages:
+  - build
+  - test
+  - deploy
+
+build_job:
+  stage: build
+  script:
+    # 打包镜像名为 xxx/项目名:分支名
+    - img=registry.k8s./productname:$CI_COMMIT_REF_NAME
+    - docker build -t $img ./DockerfileCI . && docker push $img && docker rmi $img
+    - only:
+      - tags
+
+test_job:
+  stage: test
+  image: registry.k8s.cloud/jsl/jsl-ui:v1.0 
+  services:
+    - redis:latest
+    - mongo:3.2
+  before_script:
+    - python -V
+    - cp conf/settings.yaml.test conf/setting.yaml
+    - python tests/init_test.data.py
+    - cd ui/static && npm
+    - npm run build && grunt build
+  script:
+    # 执行单元测试
+    - cd ..
+    - python manage.py test ../tests --keepdb
+
+#对于临时不想执行的job，可以选择在前面加个"."，这样就会跳过此步任务，否则你除了要注释掉这个jobj外，还需要注释上面为deploy的stage

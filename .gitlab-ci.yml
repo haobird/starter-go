@@ -1,0 +1,48 @@
+image: golang:latest
+
+variables:
+  # Please edit to your GitLab project
+  REPO_NAME: gitlab.com/namespace/project
+
+# 提前准备
+before_script:
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME
+
+stages:
+  - test
+  - build
+  - deploy
+
+.test_job:
+  stage: test
+  script:
+    - go fmt $(go list ./... | grep -v /vendor/)
+    - go vet $(go list ./... | grep -v /vendor/)
+    - go test -race $(go list ./... | grep -v /vendor/)
+
+.compile:
+  stage: compile
+  script:
+    - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/mybinary
+  artifacts:
+    paths:
+      - mybinary
+
+build:
+  stage: build
+  script:
+    # 打包镜像名为 xxx/项目名:分支名
+    - img=registry.k8s./productname:$CI_COMMIT_REF_NAME
+    - docker build -t $img ./DockerfileCI . && docker push $img && docker rmi $img
+    - only:
+      - tags
+
+# 部署
+deploy:
+  stage: deploy
+  script:
+    # 执行部署逻辑
+    
+
