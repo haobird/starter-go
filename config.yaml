@@ -1,0 +1,17 @@
+# 日志的配置文件
+log:
+  writers: file,stdout  # 文件和终端输出
+  level: debug    # 报警等级
+  file: log/chassis.log
+  format_text: false
+  color: false
+  rollingPolicy: size
+  rotate_date: 1
+  rotate_size: 1
+  backup_count: 7
+
+kafka:
+  addr: ["127.0.0.1:9092"]
+  sasl_enable: false
+  username: ""
+  password: ""

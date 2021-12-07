@@ -77,7 +77,7 @@ $(RUNS):
 release_golang:
 	$(eval svc=golang)
 	$(eval version = $(VERSION))
-	docker build --no-cache --tag=$(DOCKER_IMAGE_NAME_PREFIX)/$(svc) -f docker/golang/Dockerfile .
+	docker build --no-cache --tag=$(DOCKER_IMAGE_NAME_PREFIX)/$(svc) -f docker/Dockerfile.go .
 	docker tag $(DOCKER_IMAGE_NAME_PREFIX)/$(svc) $(DOCKER_IMAGE_NAME_PREFIX)/$(svc):$(version)
 	docker push $(DOCKER_IMAGE_NAME_PREFIX)/$(svc):$(version)
 
@@ -85,7 +85,7 @@ release_golang:
 release_develop:
 	$(eval svc=develop)
 	$(eval version = $(VERSION))
-	docker build --no-cache --tag=$(DOCKER_IMAGE_NAME_PREFIX)/$(svc) -f docker/develop/Dockerfile .
+	docker build --no-cache --tag=$(DOCKER_IMAGE_NAME_PREFIX)/$(svc) -f docker/Dockerfile.dev .
 	docker tag $(DOCKER_IMAGE_NAME_PREFIX)/$(svc) $(DOCKER_IMAGE_NAME_PREFIX)/$(svc):$(version)
 	docker push $(DOCKER_IMAGE_NAME_PREFIX)/$(svc):$(version)
 
@@ -118,7 +118,7 @@ runner:
 	
 
 boot: 
-	docker-compose -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up --force-recreate --build
 
 # 停止并删除 所有服务的容器
 cleans:

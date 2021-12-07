@@ -1,9 +1,27 @@
 version: '3.1'
 services:
     starter:
-        image: golang:1.15-stretch
+        image: golang:1.17-buster
         container_name: starter-go
         restart: always
+        working_dir: /opt
+        environment:
+            SVC: hello
+            # LOG_LEVEL: info
+            JAVA_HOME: test
         volumes:
-            - ./:/go
-        command: ["/bin/sh", "-c", "while true;do echo hello docker;sleep 1;done"]
+            - ./:/opt
+        # command: ["/bin/sh", "-c", "while true;do echo hello docker;sleep 1;done"]
+        entrypoint: go run main.go
+    # hello:
+    #     build: 
+    #     context: .
+    #     dockerfile: ./Dockerfile.devlop
+    #     args:
+    #         SVC: hello
+    #     environment:
+    #     SVC: hello
+    #     log_level: debug
+    #     volumes:
+    #     - ./:/opt/app
+    #     entrypoint: go run /opt/app/cmd/app/main.go

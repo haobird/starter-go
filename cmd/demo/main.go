@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var myId = 10
+
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	go func() {
