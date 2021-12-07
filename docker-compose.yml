@@ -7,7 +7,7 @@ services:
         working_dir: /opt
         environment:
             SVC: hello
-            # LOG_LEVEL: info
+            LOG_LEVEL: info
             JAVA_HOME: test
         volumes:
             - ./:/opt

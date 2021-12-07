@@ -23,19 +23,7 @@ func main() {
 
 	LoadConfig("config.yaml")
 
-	// viper.AutomaticEnv() // 读取匹配的环境变量
-
-	// if env := viper.Get("JAVA_HOME"); env == nil {
-	// 	fmt.Println("error!")
-	// } else {
-	// 	fmt.Printf("%#v\n", env)
-	// }
-
-	// // viper.SetEnvPrefix("IOT")   // 读取环境变量的前缀为APISERVER
-	// replacer := strings.NewReplacer(".", "_")
-	// viper.SetEnvKeyReplacer(replacer)
-
-	level := viper.Get("log.level")
+	level := viper.GetString("log.level")
 
 	fmt.Printf("level: %s \n", level)
 
